@@ -20,7 +20,7 @@ create table products
 insert into products (title, price, category_id)
 values ('Bread', 25, 1),
        ('Milk', 80, 1),
-       ('Cheese', 450, 1),
+       ('FLY', 666, 1),
        ('Cheese1', 450, 1),
        ('Cheese2', 450, 1),
        ('Cheese3', 450, 1),

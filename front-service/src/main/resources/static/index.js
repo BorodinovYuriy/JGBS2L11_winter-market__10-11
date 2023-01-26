@@ -1,4 +1,5 @@
 (function () {
+console.log("index.js is running");
     angular
         .module('market', ['ngRoute', 'ngStorage'])
         .config(config)
@@ -32,6 +33,7 @@
     }
 
     function run($rootScope, $http, $localStorage) {
+     console.log("run");
         if ($localStorage.winterMarketUser) {
             try {
                 let jwt = $localStorage.winterMarketUser.token;
@@ -52,6 +54,7 @@
             $http.get('http://localhost:5555/cart/api/v1/cart/generate_uuid')
                 .then(function successCallback(response) {
                     $localStorage.winterMarketGuestCartId = response.data.value;
+                     console.log("winterMarketGuestCartId    " + $localStorage.winterMarketGuestCartId);
                 });
         }
     }
@@ -64,6 +67,13 @@ angular.module('market').controller('indexController', function ($rootScope, $sc
                 if (response.data.token) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
                     $localStorage.winterMarketUser = {username: $scope.user.username, token: response.data.token};
+
+                    console.log("marge username - " + $scope.user.username);
+                    console.log("marge uuid - " + $localStorage.winterMarketGuestCartId);
+
+                    $scope.margeCarts($localStorage.winterMarketGuestCartId,$scope.user.username);
+
+
 
                     $scope.user.username = null;
                     $scope.user.password = null;
@@ -92,4 +102,15 @@ angular.module('market').controller('indexController', function ($rootScope, $sc
             return false;
         }
     };
+
+//Мерж корзин
+    $scope.margeCarts = function (uuid, username) {
+      $http.get('http://localhost:5555/cart/api/v1/cart/marge_carts/' + uuid + '/' + username)
+          .then(function (response) {
+              console.log("marge carts is ok!");
+          });
+    };
+
+
+
 });

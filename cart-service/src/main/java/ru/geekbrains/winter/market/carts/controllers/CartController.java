@@ -17,6 +17,12 @@ public class CartController {
     private final CartService cartService;
     private final CartConverter cartConverter;
 
+    @GetMapping("/marge_carts/{uuid}/{username}")
+    public void margeCarts (@PathVariable String uuid,
+                            @PathVariable String username){
+        cartService.margeCarts(uuid, username);
+    }
+
     @GetMapping("/generate_uuid")
     public StringResponse generateUuid() {
         return new StringResponse(UUID.randomUUID().toString());

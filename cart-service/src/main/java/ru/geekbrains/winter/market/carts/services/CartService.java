@@ -49,4 +49,15 @@ public class CartService {
         operation.accept(cart);
         redisTemplate.opsForValue().set(cartPrefix + uuid, cart);
     }
+
+    public void margeCarts(String uuid, String username) {
+        Cart cartUuid = getCurrentCart(uuid);
+        Cart cartUser = getCurrentCart(username);
+
+        cartUuid.getItems().forEach(cartUser::addItem);
+        cartUuid.clear();
+        redisTemplate.opsForValue().set(cartPrefix + uuid, cartUuid);
+        redisTemplate.opsForValue().set(cartPrefix + username, cartUser);
+
+    }
 }
